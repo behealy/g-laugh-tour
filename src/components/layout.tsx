@@ -25,12 +25,17 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      {/* <Header siteTitle={data.site.siteMetadata?.title || `Title`} /> */}
       <div
         style={{
+          position: 'absolute',
           margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
+          // maxWidth: 960,
+          // padding: `0 1.0875rem 1.45rem`,
+          width: '100%',
+          height: '100%',
+          backgroundColor: "#fafafa",
+          overflow: "hidden"
         }}
       >
         <main>{children}</main>
