@@ -1,11 +1,9 @@
-import React, { useEffect } from "react"
-import { Link } from "gatsby"
+import React, { useEffect, useState } from "react"
+import { graphql, Link } from "gatsby"
 
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
-
-let _scr = 0
 
 let frame: any
 
@@ -15,54 +13,87 @@ window.addEventListener("mousewheel", (e: Event) => {
   }
 
   frame = requestAnimationFrame(() => {
-    _scr += (e as WheelEvent).deltaY
-    console.log(_scr)
+    console.log(window.scrollY)
   })
-})
+});
 
-const IndexPage = () => {
-  const bodonk = React.useRef<HTMLDivElement>(null);
+const calculateTotalContentHeight = (totalModuleCount: number, viewportHeight: number) => {
+  return totalModuleCount * 2 * viewportHeight;
+};
 
-  React.useEffect(() => {
-    if (bodonk.current) {
-      console.log(bodonk.current);
+
+const IndexPage = ({
+  data,
+}: {
+  data: { allPageContentJson: { nodes: any[]; totalCount: number } }
+}) => {
+  const {
+    allPageContentJson: { nodes: pages, totalCount },
+  } = data
+
+  const [totalContentHeight, setTotalContentHeight] = useState(
+    calculateTotalContentHeight(totalCount, window.innerHeight)
+  )
+
+  const [sectionBreakpoints, setSectionBreakpoints] = useState(
+
+  );
+
+  useEffect(() => {
+    window.onresize = () => {
+      setTotalContentHeight(calculateTotalContentHeight(totalCount, window.innerHeight))
     }
-  }, [bodonk.current])
+  }, [])
 
   return (
-    <Layout>
-      {/* <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div> */}
-      <div ref={bodonk}>
+    <div
+      style={{
+        // position: 'absolute',
+        // margin: `0 auto`,
+        // maxWidth: 960,
+        // padding: `0 1.0875rem 1.45rem`,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#fafafa",
+        overflow: "hidden",
+      }}
+    >
+      <main>
         <div
           style={{
             width: "100%",
-            height: window.innerHeight,
+            height: totalContentHeight,
             backgroundColor: "#ff0000",
           }}
         />
         <div
           style={{
+            position: "fixed",
+            top: 0,
             width: "100%",
-            height: window.innerHeight,
-            backgroundColor: "#00ff00",
+            height: "100%",
+            backgroundColor: "rgba(0.0, 0.0, 50, 0.5)",
           }}
         />
-        <div
-          style={{
-            width: "100%",
-            height: window.innerHeight,
-            backgroundColor: "#0000ff",
-          }}
-        />
-      </div>
-    </Layout>
+      </main>
+    </div>
   )
 }
+
+export const query = graphql`
+  query MainSiteQuery {
+    allPageContentJson {
+      totalCount
+      nodes {
+        title
+        id
+        pageBlurbs {
+          copy
+          title
+        }
+      }
+    }
+  }
+`
 
 export default IndexPage

@@ -28,24 +28,27 @@ const Layout = ({ children }) => {
       {/* <Header siteTitle={data.site.siteMetadata?.title || `Title`} /> */}
       <div
         style={{
-          position: 'absolute',
-          margin: `0 auto`,
+          // position: 'absolute',
+          // margin: `0 auto`,
           // maxWidth: 960,
           // padding: `0 1.0875rem 1.45rem`,
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
           backgroundColor: "#fafafa",
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       >
-        <main>{children}</main>
-        <footer style={{
-          marginTop: `2rem`
-        }}>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
+        <main>
+          
+          {children}
+          <div style={{
+            position: "fixed",
+            top: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0.0, 0.5, 0.0, 0.5)"
+          }}></div>
+          </main>
       </div>
     </>
   )

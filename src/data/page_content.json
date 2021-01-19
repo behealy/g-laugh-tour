@@ -1,6 +1,13 @@
 [
     {
-        "title": "juan"
+        "background_video": null,
+        "pageBlurbs": [
+            {
+                "title": "Ensuring School Readiness",
+                "copy": "Half of all children in Idaho are not prepared for school when they arrive. Giraffe Laugh provides quality education to ensure school readiness for every Giraffe Laugh child."
+            }
+        ],
+        "videos": null
     },
     {
         "title": "doo"
