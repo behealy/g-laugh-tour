@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { graphql, Link } from "gatsby"
 
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
+import Module from "../components/Module"
 
-let frame: any
 
-window.addEventListener("mousewheel", (e: Event) => {
-  if (frame) {
-    cancelAnimationFrame(frame)
-  }
-
-  frame = requestAnimationFrame(() => {
-    console.log(window.scrollY)
-  })
-});
 
 const calculateTotalContentHeight = (totalModuleCount: number, viewportHeight: number) => {
   return totalModuleCount * 2 * viewportHeight;
@@ -31,17 +22,17 @@ const IndexPage = ({
     allPageContentJson: { nodes: pages, totalCount },
   } = data
 
-  const [totalContentHeight, setTotalContentHeight] = useState(
-    calculateTotalContentHeight(totalCount, window.innerHeight)
-  )
-
-  const [sectionBreakpoints, setSectionBreakpoints] = useState(
-
+  const [viewHeight, setViewHeight] = useState(
+    window.innerHeight
   );
+
+  const totalContentHeight = useMemo(() => {
+    return calculateTotalContentHeight(totalCount, viewHeight);
+  }, [totalCount, viewHeight])
 
   useEffect(() => {
     window.onresize = () => {
-      setTotalContentHeight(calculateTotalContentHeight(totalCount, window.innerHeight))
+      setViewHeight((window.innerHeight))
     }
   }, [])
 
@@ -74,7 +65,13 @@ const IndexPage = ({
             height: "100%",
             backgroundColor: "rgba(0.0, 0.0, 50, 0.5)",
           }}
-        />
+        >
+          <Module 
+            scrollStop0={0}
+            scrollStop1={window.innerHeight}
+            moduleHeight={viewHeight}
+          />
+        </div>
       </main>
     </div>
   )
